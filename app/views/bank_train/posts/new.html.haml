@@ -1,16 +1,16 @@
 .page-posts-new
-  %h3 创建岗位
-  %a{:role=>"button",class: "btn btn-primary",:href=>"/posts"}岗位清单
+  %div{class: "modal fade", :id => "myModal", :tabindex =>"-1", :role => "dialog", :aria => {:labelledby => "myModalLabel"}}
+    %h3 创建岗位
+    %a{:role=>"button",class: "btn btn-primary",:href=>"/posts"}岗位清单
+    = simple_form_for @post do |f|
+      = f.input :number
 
-  = simple_form_for @post do |f|
-    = f.input :number
+      = f.input :name
 
-    = f.input :name
+      = f.input :desc
 
-    = f.input :desc
+      = f.association :levels, label_method: :name, as: :check_boxes
 
-    = f.association :levels, label_method: :name, as: :check_boxes
+      = f.association :business_categories, label_method: :name, as: :check_boxes
 
-    = f.association :business_categories, label_method: :name, as: :check_boxes
-
-    = f.button :submit, "添加"
+      = f.button :submit, "添加"

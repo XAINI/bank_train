@@ -1,19 +1,32 @@
-zh-CN:
+ zh-CN:
   mongoid:
+    models:
+      bank_train/post:  岗位
+      bank_train/level: 级别
+    attributes:
+      bank_train/post:
+        number:  岗位编号
+        name:    岗位名
+        desc:    岗位描述
+        levels:  岗位级别
+        business_categories: 岗位类别
+      bank_train/level:
+        number:  级别编号
+        name:    级别名称
+        posts:   设置岗位
     errors:
       models:
         bank_train/post:
           attributes:
-              number:
-                blank: 请填写岗位编号
-              name:
-                blank: 请填写岗位名
-              desc:
-                blank: 请填写岗位描述
-      models:
+            number:
+              blank: 岗位编号不能为空
+            name:
+              blank: 岗位名称不能为空
+            desc:
+              blank: 岗位描述不能为空
         bank_train/level:
           attributes:
             number:
-              blank: 请填写级别编号
+              blank: 级别编号不能为空
             name:
-              blank: 请填写级别名称
+              blank: 级别名称不能为空
