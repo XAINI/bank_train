@@ -22,8 +22,6 @@
               blank: 岗位编号不能为空
             name:
               blank: 岗位名称不能为空
-            desc:
-              blank: 岗位描述不能为空
         bank_train/level:
           attributes:
             number:

@@ -5,15 +5,18 @@ module BankTrain
       @post = Post.new
     end
 
+    def new
+      @post = Post.new
+    end
+
     def create
-      p "2222222222222222222222222222"
       @post = Post.create(post_params)
       if @post.save
-        p "333333333333333333333333333333333"
-        redirect_to "/posts"
+        render :json => {:status => 200}
+      #  redirect_to "/posts"
       else
-        p "444444444444444444444444444444444"
-        render "new"
+        # render "new"
+        render :json => @post.errors.messages, :status => 413
       end
     end
 
