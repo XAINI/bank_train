@@ -13,9 +13,7 @@ module BankTrain
       @post = Post.create(post_params)
       if @post.save
         render :json => {:status => 200}
-      #  redirect_to "/posts"
       else
-        # render "new"
         render :json => @post.errors.messages, :status => 413
       end
     end
