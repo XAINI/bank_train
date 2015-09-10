@@ -28,7 +28,7 @@
             %span 类
           %td
             .btn-group.btn-group-sm
-              %a.btn.btn-default{href: "/posts/#{post.id}/edit"}
+              %a.btn.btn-default.update-post{href: "#", :id => "#{post.id}", :data =>{:toggle => "modal", :target =>"#myEditModal"}}
                 %i.glyphicon.glyphicon-pencil
                 %span 修改
               %a.btn.btn-default{href: "/posts/#{post.id}", :data => {confirm: "确认删除吗?", method: :delete}}
@@ -59,18 +59,15 @@
         %div{class: "modal-header"}
           %h4{class: "modal-title", :id => "myModalLabel"}创建岗位
         %div{class: "modal-body"}
-          .page-posts-form-new
-            = simple_form_for @post do |f|
-              = f.input :number
-
-              = f.input :name
-
-              = f.input :desc
-
-              = f.association :levels, label_method: :name, as: :check_boxes
-
-              = f.association :business_categories, label_method: :name, as: :check_boxes
-
-              = f.button :submit, "添加"
+          = render :partial => "form_post"
+        %div{class: "modal-footer"}
+          %button{:type => "button", class: "btn btn-default", :data =>{:dismiss => "modal"}}关闭
+.page-posts-edit
+  %div{class: "modal fade", :id => "myEditModal", :tabindex =>"-1", :role => "dialog", :aria => {:labelledby => "myModalLabel"}}
+    %div{class: "modal-dialog", :role => "document"}
+      %div{class: "modal-content"}
+        %div{class: "modal-header"}
+          %h4{class: "modal-title", :id => "myEditModalLabel"}岗位信息修改
+        .modal-body.form-post-edit{:id => "post-edit"}
         %div{class: "modal-footer"}
           %button{:type => "button", class: "btn btn-default", :data =>{:dismiss => "modal"}}关闭

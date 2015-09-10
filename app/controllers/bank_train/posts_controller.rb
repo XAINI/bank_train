@@ -18,17 +18,18 @@ module BankTrain
       end
     end
 
+    def edit
+      @post = Post.find(params[:id])
+      render "edit", :layout => false
+    end
+
     def update
       @post = Post.find(params[:id])
       if @post.update_attributes(post_params)
-        redirect_to "/posts"
+        render :json => {:status => 200}
       else
-        render "edit"
+        render :json => @post.errors.messages, :status => 413
       end
-    end
-
-    def edit
-      @post = Post.find(params[:id])
     end
 
     def destroy

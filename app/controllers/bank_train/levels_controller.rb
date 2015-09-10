@@ -2,6 +2,7 @@ module BankTrain
   class LevelsController < BankTrain::ApplicationController
     def index
       @levels = BankTrain::Level.all
+      @level = Level.new
     end
 
     def new
@@ -11,22 +12,23 @@ module BankTrain
     def create
       @level = Level.create(level_params)
       if @level.save
-        redirect_to "/levels"
+        render :json => {:status => 200}
       else
-        render "new"
+        render :json => @level.errors.messages, :status => 413
       end
     end
 
     def edit
       @level = Level.find(params[:id])
+      render "edit", layout: false
     end
 
     def update
       @level = Level.find(params[:id])
       if @level.update_attributes(level_params)
-        redirect_to "/levels"
+        render :json => {:status => 200}
       else
-        render "edit"
+        render :json => @level.errors.messages, :status => 413
       end
     end
 

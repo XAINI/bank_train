@@ -1,7 +1,5 @@
-.page-posts-form-edit
+.page-posts-form-new
   = simple_form_for @post do |f|
-    = f.input :id, as: :hidden, input_html: { value: @post.id }
-
     = f.input :number
 
     = f.input :name
@@ -9,7 +7,7 @@
     = f.input :desc
 
     = f.association :levels, label_method: :name, as: :check_boxes
-    
+
     = f.association :business_categories, label_method: :name, as: :check_boxes
 
     = f.button :submit, "提交"
