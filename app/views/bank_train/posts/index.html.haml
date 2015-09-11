@@ -28,7 +28,7 @@
             %span 类
           %td
             .btn-group.btn-group-sm
-              %a.btn.btn-default.update-post{href: "#", :id => "#{post.id}", :data =>{:toggle => "modal", :target =>"#myEditModal"}}
+              %a.btn.btn-default.update-post{href: "#", :data =>{:toggle => "modal", :target =>"#myEditModal", :post_id => "#{post.id}"}}
                 %i.glyphicon.glyphicon-pencil
                 %span 修改
               %a.btn.btn-default{href: "/posts/#{post.id}", :data => {confirm: "确认删除吗?", method: :delete}}

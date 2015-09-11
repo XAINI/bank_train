@@ -18,7 +18,7 @@
           %td= level.name
           %td
             .btn-group.btn-group-sm
-              %a.btn.btn-default.update-level{href: "#", :id => "#{level.id}", :data =>{:toggle => "modal", :target =>"#myEditModal"}} 
+              %a.btn.btn-default.update-level{href: "#", :data =>{:toggle => "modal", :target =>"#myEditModal", :level_id => "#{level.id}"}} 
                 %i.glyphicon.glyphicon-pencil
                 %span 修改
               %a.btn.btn-default{href: "/levels/#{level.id}", data: {confirm: "确认删除吗?", method: :delete}} 
