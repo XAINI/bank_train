@@ -52,22 +52,5 @@
         .modal-footer
           %a.btn.btn-default{data: {dismiss: :modal}} 关闭
           %a.btn.btn-success 确定
-.page-posts-new
-  %div{class: "modal fade", :id => "myModal", :tabindex =>"-1", :role => "dialog", :aria => {:labelledby => "myModalLabel"}}
-    %div{class: "modal-dialog", :role => "document"}
-      %div{class: "modal-content"}
-        %div{class: "modal-header"}
-          %h4{class: "modal-title", :id => "myModalLabel"}创建岗位
-        %div{class: "modal-body"}
-          = render :partial => "form_post"
-        %div{class: "modal-footer"}
-          %button{:type => "button", class: "btn btn-default", :data =>{:dismiss => "modal"}}关闭
-.page-posts-edit
-  %div{class: "modal fade", :id => "myEditModal", :tabindex =>"-1", :role => "dialog", :aria => {:labelledby => "myModalLabel"}}
-    %div{class: "modal-dialog", :role => "document"}
-      %div{class: "modal-content"}
-        %div{class: "modal-header"}
-          %h4{class: "modal-title", :id => "myEditModalLabel"}岗位信息修改
-        .modal-body.form-post-edit{:id => "post-edit"}
-        %div{class: "modal-footer"}
-          %button{:type => "button", class: "btn btn-default", :data =>{:dismiss => "modal"}}关闭
+= render :partial => "form_post"
+= render :partial => "form_post_edit_modal"

@@ -24,20 +24,5 @@
               %a.btn.btn-default{href: "/levels/#{level.id}", data: {confirm: "确认删除吗?", method: :delete}} 
                 %i.glyphicon.glyphicon-trash
                 %span 删除
-  %div{class: "modal fade", :id => "myModal", :tabindex =>"-1", :role => "dialog", :aria => {:labelledby => "myModalLabel"}}
-    %div{class: "modal-dialog", :role => "document"}
-      %div{class: "modal-content"}
-        %div{class: "modal-header"}
-          %h4{class: "modal-title", :id => "myModalLabel"}级别创建
-        %div{class: "modal-body"}
-          = render :partial => "form_level"
-        %div{class: "modal-footer"}
-          %button{:type => "button", class: "btn btn-default", :data =>{:dismiss => "modal"}}关闭
-  %div{class: "modal fade", :id => "myEditModal", :tabindex =>"-1", :role => "dialog", :aria => {:labelledby => "myModalLabel"}}
-    %div{class: "modal-dialog", :role => "document"}
-      %div{class: "modal-content"}
-        %div{class: "modal-header"}
-          %h4{class: "modal-title", :id => "myEditModalLabel"}级别信息修改
-        .modal-body.form-post-edit{:id => "level-edit"}
-        %div{class: "modal-footer"}
-          %button{:type => "button", class: "btn btn-default", :data =>{:dismiss => "modal"}}关闭
+= render :partial => "form_level"
+= render :partial => "form_level_edit_modal"

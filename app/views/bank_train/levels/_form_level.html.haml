@@ -1,9 +1,18 @@
-.page-levels-new
-  = simple_form_for @level do |f|
-    = f.input :number
+%div{class: "modal fade", :id => "myModal", :tabindex =>"-1", :role => "dialog", :aria => {:labelledby => "myModalLabel"}}
+  %div{class: "modal-dialog", :role => "document"}
+    %div{class: "modal-content"}
+      %div{class: "modal-header"}
+        %h4{class: "modal-title", :id => "myModalLabel"}级别创建
+      %div{class: "modal-body"}
+        .page-levels-new
+          = simple_form_for @level do |f|
+            = f.input :number
 
-    = f.input :name
+            = f.input :name
 
-    = f.association :posts, label_method: :name, as: :check_boxes
+            = f.association :posts, label_method: :name, as: :check_boxes
 
-    = f.button :submit, "添加"
+            = f.button :submit, "提交"
+      %div{class: "modal-footer"}
+        %button{:type => "button", class: "btn btn-default", :data =>{:dismiss => "modal"}}关闭
+        
