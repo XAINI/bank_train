@@ -1,7 +1,5 @@
-.page-posts-form-edit
+.page-posts-form-edit{:data => {:post_id => @post.id}}
   = simple_form_for @post do |f|
-    = f.input :id, as: :hidden, input_html: { value: @post.id }
-
     = f.input :number
 
     = f.input :name

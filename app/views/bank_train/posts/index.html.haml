@@ -1,7 +1,7 @@
 .page-posts-index
   %h3 设置岗位
-  %button{:type => "button", class: "btn btn-primary btn-lg", :data =>{:toggle => "modal", :target =>"#myModal"}}创建岗位
-  %table.table.table-striped.table-bordered
+  %button{:type => "button", class: "btn btn-primary btn-lg", :data =>{:toggle => "modal", :target =>"#post-form-modal"}}创建岗位
+  %table.table.table-striped.table-bordered.post-list
     %caption 岗位清单
     %thead
       %tr
@@ -15,7 +15,7 @@
         %tr
           %td{colspan: 3} 没有数据
       - @posts.each do |post|
-        %tr
+        %tr.post
           %td.number= post.number
           %td
             .name= post.name
@@ -52,5 +52,5 @@
         .modal-footer
           %a.btn.btn-default{data: {dismiss: :modal}} 关闭
           %a.btn.btn-success 确定
-= render :partial => "form_post"
-= render :partial => "form_post_edit_modal"
+  = render :partial => "form_post"
+  = render :partial => "form_post_edit_modal"

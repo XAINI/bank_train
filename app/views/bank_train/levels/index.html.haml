@@ -1,8 +1,8 @@
 .page-levels-index
-  %h3 设置级别 
-  %table.table.table-striped.table-bordered
+  %h3 设置级别
+  %table.table.table-striped.table-bordered.level-list
     %caption 级别清单
-    %button{:type => "button", class: "btn btn-primary btn-lg", :data =>{:toggle => "modal", :target =>"#myModal"}}创建级别
+    %button{:type => "button", class: "btn btn-primary btn-lg", :data =>{:toggle => "modal", :target =>"#level-form-modal"}}创建级别
     %thead
       %tr
         %th 级别编号
@@ -16,13 +16,13 @@
         %tr
           %td.number= level.number
           %td= level.name
-          %td
+          %td.level
             .btn-group.btn-group-sm
-              %a.btn.btn-default.update-level{href: "#", :data =>{:toggle => "modal", :target =>"#myEditModal", :level_id => "#{level.id}"}} 
+              %a.btn.btn-default.update-level{href: "#", :data =>{:toggle => "modal", :target =>"#myEditModal", :level_id => "#{level.id}"}}
                 %i.glyphicon.glyphicon-pencil
                 %span 修改
-              %a.btn.btn-default{href: "/levels/#{level.id}", data: {confirm: "确认删除吗?", method: :delete}} 
+              %a.btn.btn-default{href: "/levels/#{level.id}", data: {confirm: "确认删除吗?", method: :delete}}
                 %i.glyphicon.glyphicon-trash
                 %span 删除
-= render :partial => "form_level"
-= render :partial => "form_level_edit_modal"
+  = render :partial => "form_level"
+  = render :partial => "form_level_edit_modal"

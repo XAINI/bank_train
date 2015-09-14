@@ -1,10 +1,10 @@
-%div{class: "modal fade", :id => "myModal", :tabindex =>"-1", :role => "dialog", :aria => {:labelledby => "myModalLabel"}}
-  %div{class: "modal-dialog", :role => "document"}
-    %div{class: "modal-content"}
-      %div{class: "modal-header"}
-        %h4{class: "modal-title", :id => "myModalLabel"}级别创建
-      %div{class: "modal-body"}
-        .page-levels-new
+.page-levels-new
+  %div{class: "modal fade", :id => "level-form-modal", :tabindex =>"-1", :role => "dialog", :aria => {:labelledby => "myModalLabel"}}
+    %div{class: "modal-dialog", :role => "document"}
+      %div{class: "modal-content"}
+        %div{class: "modal-header"}
+          %h4{class: "modal-title"}级别创建
+        %div{class: "modal-body"}
           = simple_form_for @level do |f|
             = f.input :number
 
@@ -13,6 +13,5 @@
             = f.association :posts, label_method: :name, as: :check_boxes
 
             = f.button :submit, "提交"
-      %div{class: "modal-footer"}
-        %button{:type => "button", class: "btn btn-default", :data =>{:dismiss => "modal"}}关闭
-        
+        %div{class: "modal-footer"}
+          %button{:type => "button", class: "btn btn-default", :data =>{:dismiss => "modal"}}关闭
