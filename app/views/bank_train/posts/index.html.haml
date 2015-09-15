@@ -1,6 +1,6 @@
 .page-posts-index
   %h3 设置岗位
-  %button{:type => "button", class: "btn btn-primary btn-lg", :data =>{:toggle => "modal", :target =>"#post-form-modal"}}创建岗位
+  %button.btn.btn-primary.btn-lg.post-crt{:type => "button", :data =>{:toggle => "modal", :target =>"#modal-dialog"}}创建岗位
   %table.table.table-striped.table-bordered.post-list
     %caption 岗位清单
     %thead
@@ -28,29 +28,11 @@
             %span 类
           %td
             .btn-group.btn-group-sm
-              %a.btn.btn-default.update-post{href: "#", :data =>{:toggle => "modal", :target =>"#myEditModal", :post_id => "#{post.id}"}}
+              %a.btn.btn-default.update-post{href: "#", :data =>{:toggle => "modal", :target =>"#modal-dialog", :post_id => "#{post.id}"}}
                 %i.glyphicon.glyphicon-pencil
                 %span 修改
               %a.btn.btn-default{href: "/posts/#{post.id}", :data => {confirm: "确认删除吗?", method: :delete}}
                 %i.glyphicon.glyphicon-trash
                 %span 删除
 
-  .table-opers.hide
-    %a.btn.btn-default{data: {toggle: :modal, target: '.new-dialog'}} 增加岗位
-
-  .new-dialog.modal.fade
-    .modal-dialog
-      .modal-content
-        .modal-header
-          %a.close{data: {dismiss: :modal}}
-            %span &times;
-          %h4 增加岗位
-        .modal-body
-          = simple_form_for BankTrain::Post.new do |f|
-            = f.input :number
-            = f.input :name
-        .modal-footer
-          %a.btn.btn-default{data: {dismiss: :modal}} 关闭
-          %a.btn.btn-success 确定
-  = render :partial => "form_post"
-  = render :partial => "form_post_edit_modal"
+= render_cell :"bank_train/modal", :show

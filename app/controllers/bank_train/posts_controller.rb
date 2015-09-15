@@ -2,11 +2,15 @@ module BankTrain
   class PostsController < BankTrain::ApplicationController
     def index
       @posts = BankTrain::Post.all
-      @post = Post.new
     end
 
     def new
       @post = Post.new
+      form_html = render_to_string :partial => "new"
+      render :json => {
+        :title => "创建岗位",
+        :body => form_html
+      }
     end
 
     def create
@@ -20,7 +24,11 @@ module BankTrain
 
     def edit
       @post = Post.find(params[:id])
-      render "edit", :layout => false
+      form_html = render_to_string :partial => "edit"
+      render :json => {
+        :title => "岗位信息修改",
+        :body => form_html
+      }
     end
 
     def update

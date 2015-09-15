@@ -16,7 +16,7 @@ class PostModal
     if msg.status is 200
       @set_post_remove_css(".post_number")
       @set_post_remove_css(".post_name")
-      $('#myModal').modal('hide');
+      window.modal_dialog.hide()
       location.reload();
 
   set_failure_im: (msg)->
@@ -35,8 +35,18 @@ class PostModal
 
   bind_events: ->
     that = this
+    @$elm.on "click",".post-crt", ->
+      $.ajax
+        url: "/posts/new",
+        method: "get",
+        dataType: "json"
+      .success (msg) ->
+        window.modal_dialog.set_title( msg.title )
+        window.modal_dialog.set_body( msg.body )
+      .error (msg) ->
+        console.log(msg)
 
-    @$elm.on "submit",".page-posts-new .simple_form",(event) ->
+    @$elm.on "submit",".page-posts-form-new .simple_form",(event) ->
       event.preventDefault()
       $.ajax
         method: "POST",
@@ -53,13 +63,14 @@ class PostModal
       $.ajax
         url: "/posts/" + post_id + "/edit",
         method: "get",
-        dataType: "html"
+        dataType: "json"
       .success (msg) ->
-        $( "#post-edit" ).html( msg );
+        window.modal_dialog.set_title( msg.title )
+        window.modal_dialog.set_body( msg.body )
       .error (msg) ->
         console.log(msg)
 
-    @$elm.on "click",".page-posts-form-edit .simple_form", ->
+    @$elm.on "submit",".page-posts-form-edit .simple_form", ->
       post_id = $(this).closest(".page-posts-form-edit").attr("data-post-id")
       event.preventDefault();
       $.ajax
@@ -88,7 +99,7 @@ class LevelModal
     if msg.status is 200
       @set_level_remove_css(".level_number")
       @set_level_remove_css(".level_name")
-      $('#myModal').modal('hide');
+      window.modal_dialog.hide()
       location.reload();
 
   set_failure_im: (msg)->
@@ -107,7 +118,19 @@ class LevelModal
 
   bind_events: ->
     that = this
-    @$elm.on "submit",".simple_form", (event) ->
+
+    @$elm.on "click",".level-crt", ->
+      $.ajax
+        url: "/levels/new",
+        method: "get",
+        dataType: "json"
+      .success (msg) ->
+        window.modal_dialog.set_title( msg.title )
+        window.modal_dialog.set_body( msg.body )
+      .error (msg) ->
+        console.log(msg)
+
+    @$elm.on "submit",".page-levels-new .simple_form", (event) ->
       event.preventDefault()
       $.ajax
         method: "POST",
@@ -124,13 +147,14 @@ class LevelModal
       $.ajax
         url: "/levels/" + level_id + "/edit",
         method: "get",
-        dataType: "html"
+        dataType: "json"
       .success (msg) ->
-        $( "#level-edit" ).html( msg );
+        window.modal_dialog.set_title( msg.title )
+        window.modal_dialog.set_body( msg.body )
       .error (msg) ->
         console.log(msg)
 
-    @$elm.on "click",".page-levels-edit .simple_form", (event) ->
+    @$elm.on "submit",".page-levels-edit .simple_form", (event) ->
       level_id = $( this ).closest(".page-levels-edit").attr("data-level-id")
       event.preventDefault()
       $.ajax

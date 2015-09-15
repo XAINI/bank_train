@@ -7,6 +7,11 @@ module BankTrain
 
     def new
       @level = Level.new
+      form_html = render_to_string :partial => "new"
+      render :json => {
+        :title => "创建级别",
+        :body => form_html
+      }
     end
 
     def create
@@ -20,7 +25,11 @@ module BankTrain
 
     def edit
       @level = Level.find(params[:id])
-      render "edit", layout: false
+      form_html = render_to_string :partial => "edit"
+      render :json => {
+        :title => "级别信息修改",
+        :body => form_html
+      }
     end
 
     def update
