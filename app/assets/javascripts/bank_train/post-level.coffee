@@ -46,7 +46,7 @@ class PostModal
       .error (msg) ->
         console.log(msg)
 
-    @$elm.on "submit",".page-posts-form-new .simple_form",(event) ->
+    @$elm.on "submit",".modal-body .page-posts-form-new .simple_form",(event) ->
       event.preventDefault()
       $.ajax
         method: "POST",
@@ -70,7 +70,7 @@ class PostModal
       .error (msg) ->
         console.log(msg)
 
-    @$elm.on "submit",".page-posts-form-edit .simple_form", ->
+    @$elm.on "submit",".modal-body .page-posts-form-edit .simple_form", ->
       post_id = $(this).closest(".page-posts-form-edit").attr("data-post-id")
       event.preventDefault();
       $.ajax
@@ -130,7 +130,7 @@ class LevelModal
       .error (msg) ->
         console.log(msg)
 
-    @$elm.on "submit",".page-levels-new .simple_form", (event) ->
+    @$elm.on "submit",".modal-body .page-levels-new .simple_form", (event) ->
       event.preventDefault()
       $.ajax
         method: "POST",
@@ -154,7 +154,7 @@ class LevelModal
       .error (msg) ->
         console.log(msg)
 
-    @$elm.on "submit",".page-levels-edit .simple_form", (event) ->
+    @$elm.on "submit",".modal-body .page-levels-edit .simple_form", (event) ->
       level_id = $( this ).closest(".page-levels-edit").attr("data-level-id")
       event.preventDefault()
       $.ajax

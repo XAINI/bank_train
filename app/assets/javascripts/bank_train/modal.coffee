@@ -1,7 +1,7 @@
 class ModalDialog
   constructor: (@$modal_dialog_ele)->
     @$title_ele = @$modal_dialog_ele.find(".modal-title")
-    @$body_ele  = @$modal_dialog_ele.find(".form-body-modal")
+    @$body_ele  = @$modal_dialog_ele.find(".modal-body")
 
   set_title: (title)->
     @$title_ele.html(title)
