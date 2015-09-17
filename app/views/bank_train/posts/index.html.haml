@@ -15,24 +15,6 @@
         %tr
           %td{colspan: 3} 没有数据
       - @posts.each do |post|
-        %tr.post
-          %td.number= post.number
-          %td
-            .name= post.name
-            .desc= post.desc
-          %td
-            - post.levels.each do |level|
-              .level= level.name
-          %td
-            %span= post.business_categories.count
-            %span 类
-          %td
-            .btn-group.btn-group-sm
-              %a.btn.btn-default.update-post{href: "#", :data =>{:toggle => "modal", :target =>"#modal-dialog", :post_id => "#{post.id}"}}
-                %i.glyphicon.glyphicon-pencil
-                %span 修改
-              %a.btn.btn-default{href: "/posts/#{post.id}", :data => {confirm: "确认删除吗?", method: :delete}}
-                %i.glyphicon.glyphicon-trash
-                %span 删除
+        = render :partial => "post_index_data",locals: { post: post }
 
   = render_cell :"bank_train/modal", :show

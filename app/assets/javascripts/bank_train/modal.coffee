@@ -12,6 +12,9 @@ class ModalDialog
   hide: ->
     @$modal_dialog_ele.modal('hide')
 
+  get_modal_dialog: ->
+    @$modal_dialog_ele
+
 jQuery(document).on 'ready page:load', ->
   if $("#modal-dialog").length > 0
     window.modal_dialog = new ModalDialog($("#modal-dialog"))

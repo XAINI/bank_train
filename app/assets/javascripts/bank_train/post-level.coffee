@@ -1,7 +1,11 @@
 class PostModal
 #岗位模态框
   constructor: (@$elm)->
+    @modal_dialog_hide_event_loaded = false
     @bind_events()
+
+  set_scroll_bottom: ->
+    $(document).scrollTop($(".page-posts-index").height())
 
   set_post_css: (css,msg_val)->
     @set_post_remove_css(css)
@@ -16,8 +20,24 @@ class PostModal
     if msg.status is 200
       @set_post_remove_css(".post_number")
       @set_post_remove_css(".post_name")
-      window.modal_dialog.hide()
-      location.reload();
+
+    # 如果把这个注册事件代码移动到 bind_events 方法内
+    # 会导致 set_scroll_bottom 方法内的代码没有产生效果
+    # 原因未知
+    # by fushang318
+    # if !@modal_dialog_hide_event_loaded
+    window.modal_dialog.get_modal_dialog().one 'hidden.bs.modal', =>
+      @set_scroll_bottom()
+      jQuery(msg.body)
+        .hide()
+        .fadeIn(500)
+        .appendTo @$elm.find(".post-list tbody")
+      # @modal_dialog_hide_event_loaded = true
+
+    window.modal_dialog.hide()
+    # @$elm.find(".post-list tbody").append(msg.body)
+
+
 
   set_failure_im: (msg)->
     msg_number = msg.responseJSON.number
@@ -35,6 +55,7 @@ class PostModal
 
   bind_events: ->
     that = this
+
     @$elm.on "click",".post-crt", ->
       $.ajax
         url: "/posts/new",
@@ -100,7 +121,6 @@ class LevelModal
       @set_level_remove_css(".level_number")
       @set_level_remove_css(".level_name")
       window.modal_dialog.hide()
-      location.reload();
 
   set_failure_im: (msg)->
     msg_level_number = msg.responseJSON.number

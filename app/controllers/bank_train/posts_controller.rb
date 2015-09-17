@@ -16,7 +16,11 @@ module BankTrain
     def create
       @post = Post.create(post_params)
       if @post.save
-        render :json => {:status => 200}
+        form_html = render_to_string :partial => 'post_index_data',locals: { post: @post } 
+        render :json => {
+          :status => 200,
+          :body => form_html
+        }
       else
         render :json => @post.errors.messages, :status => 413
       end
