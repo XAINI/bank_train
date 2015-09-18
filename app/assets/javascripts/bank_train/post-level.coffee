@@ -13,17 +13,20 @@ class PostModal
     # 原因未知
     # by fushang318
     # if !@modal_dialog_hide_event_loaded
-      if post_id is undefined
-        window.modal_dialog.get_modal_dialog().one 'hidden.bs.modal', =>
+      window.modal_dialog.get_modal_dialog().one 'hidden.bs.modal', =>
+        if post_id is undefined
           window.modal_dialog.set_scroll_bottom(".page-posts-index")
           jQuery(msg.body)
             .hide()
             .fadeIn(500)
             .appendTo @$elm.find(".post-list tbody")
-      else
-        tag = $("div a[data-post-id = '#{post_id}']").parents(".post")
-        tag.replaceWith( msg.body )
-      window.modal_dialog.hide()  
+        else
+          tag = $("div a[data-post-id = '#{post_id}']").parents(".post")
+          tag.replaceWith( msg.body )
+          bc = jQuery("tr:first").css("backgroundColor")
+          $("div a[data-post-id = '#{post_id}']").parents(".post").css("backgroundColor","#D9DD77")
+          $("div a[data-post-id = '#{post_id}']").parents(".post").animate({backgroundColor: bc})
+      window.modal_dialog.hide()
 
   set_failure_im: (msg)->
     msg_number = msg.responseJSON.number
@@ -98,18 +101,21 @@ class LevelModal
     if msg.status is 200
       window.modal_dialog.set_remove_css(".level_number")
       window.modal_dialog.set_remove_css(".level_name")
-      if level_id is undefined
-        window.modal_dialog.get_modal_dialog().one "hidden.bs.modal", =>
+      window.modal_dialog.get_modal_dialog().one "hidden.bs.modal", =>
+        if level_id is undefined
           window.modal_dialog.set_scroll_bottom(".page-levels-index")
           jQuery(msg.body)
             .hide()
             .fadeIn(500)
             .appendTo @$elm.find(".level-list tbody")
-      else
-        tag = $("div a[data-level-id= '#{level_id}']").parents(".level")
-        tag.replaceWith(msg.body)
+        else
+          tag = $("div a[data-level-id= '#{level_id}']").parents(".level")
+          tag.replaceWith(msg.body)
+          bc = jQuery("tr:first").css("backgroundColor")
+          $("div a[data-level-id= '#{level_id}']").parents(".level").css("backgroundColor","#D9DD77")
+          $("div a[data-level-id= '#{level_id}']").parents(".level").animate({backgroundColor: bc})
       window.modal_dialog.hide()
-      
+
   set_failure_im: (msg,level_id)->
     msg_level_number = msg.responseJSON.number
     msg_level_name = msg.responseJSON.name
