@@ -4,54 +4,40 @@ class PostModal
     @modal_dialog_hide_event_loaded = false
     @bind_events()
 
-  set_scroll_bottom: ->
-    $(document).scrollTop($(".page-posts-index").height())
-
-  set_post_css: (css,msg_val)->
-    @set_post_remove_css(css)
-    $(css).addClass("has-error")
-    $(css).append("<span class='help-block'>#{msg_val}</span>")
-
-  set_post_remove_css:(class_css)->
-    $(class_css).removeClass("has-error")
-    $(class_css+" span").remove();
-
-  set_success_im: (msg)->
+  set_success_im: (msg,post_id)->
     if msg.status is 200
-      @set_post_remove_css(".post_number")
-      @set_post_remove_css(".post_name")
-
+      window.modal_dialog.set_remove_css(".post_number")
+      window.modal_dialog.set_remove_css(".post_number")
     # 如果把这个注册事件代码移动到 bind_events 方法内
     # 会导致 set_scroll_bottom 方法内的代码没有产生效果
     # 原因未知
     # by fushang318
     # if !@modal_dialog_hide_event_loaded
-    window.modal_dialog.get_modal_dialog().one 'hidden.bs.modal', =>
-      @set_scroll_bottom()
-      jQuery(msg.body)
-        .hide()
-        .fadeIn(500)
-        .appendTo @$elm.find(".post-list tbody")
-      # @modal_dialog_hide_event_loaded = true
-
-    window.modal_dialog.hide()
-    # @$elm.find(".post-list tbody").append(msg.body)
-
-
+      window.modal_dialog.get_modal_dialog().one 'hidden.bs.modal', =>
+      window.modal_dialog.set_scroll_bottom(".page-posts-index")
+      if post_id is undefined
+        jQuery(msg.body)
+          .hide()
+          .fadeIn(500)
+          .appendTo @$elm.find(".post-list tbody")
+      else
+        tag = $("div a[data-post-id = '#{post_id}']").parents(".post")
+        tag.replaceWith( msg.body )
+      window.modal_dialog.hide()  
 
   set_failure_im: (msg)->
     msg_number = msg.responseJSON.number
     msg_name = msg.responseJSON.name
     if msg.status is 413
       if msg_number isnt undefined
-        @set_post_css(".post_number",msg_number)
+        window.modal_dialog.set_add_css(".post_number",msg_number)
       else
-         @set_post_remove_css(".post_number")
+         window.modal_dialog.set_remove_css(".post_number")
 
       if msg_name isnt undefined
-        @set_post_css(".post_name",msg_name)
+        window.modal_dialog.set_add_css(".post_name",msg_name)
       else
-        @set_post_remove_css(".post_name")
+        window.modal_dialog.set_remove_css(".post_name")
 
   bind_events: ->
     that = this
@@ -99,42 +85,45 @@ class PostModal
         url: "/posts/"+post_id+"",
         data: $( this ).serializeArray()
       .success ( msg ) =>
-        that.set_success_im(msg)
+        that.set_success_im(msg,post_id)
       .error (msg) =>
-        that.set_failure_im(msg)
+        that.set_failure_im(msg,post_id)
 
 class LevelModal
 # 级别模态框
   constructor: (@$elm)->
     @bind_events()
 
-  set_level_css: (css,msg_val)->
-    @set_level_remove_css(css)
-    $(css).addClass("has-error")
-    $(css).append("<span class='help-block'>#{msg_val}</span>")
-
-  set_level_remove_css: (class_level)->
-    $(class_level).removeClass("has-error")
-    $(class_level+" span").remove();
-  set_success_im: (msg)->
+  set_success_im: (msg,level_id)->
     if msg.status is 200
-      @set_level_remove_css(".level_number")
-      @set_level_remove_css(".level_name")
+      window.modal_dialog.set_remove_css(".level_number")
+      window.modal_dialog.set_remove_css(".level_name")
+      window.modal_dialog.get_modal_dialog().one "hidden.bs.modal", =>
+        window.modal_dialog.set_scroll_bottom(".page-levels-index")
+        if level_id is undefined
+          jQuery(msg.body)
+            .hide()
+            .fadeIn(500)
+            .appendTo @$elm.find(".level-list tbody")
+        else
+          tag = $("div a[data-level-id= '#{level_id}']").parents(".level")
+          tag.replaceWith(msg.body)
       window.modal_dialog.hide()
-
-  set_failure_im: (msg)->
+      
+  set_failure_im: (msg,level_id)->
     msg_level_number = msg.responseJSON.number
     msg_level_name = msg.responseJSON.name
     if msg.status is 413
       if msg_level_number isnt undefined
-        @set_level_css(".level_number",msg_level_number)
+        window.modal_dialog.set_add_css(".level_number",msg_level_number)
       else
-        @set_level_remove_css(".level_number")
+        window.modal_dialog.set_remove_css(".level_number")
 
       if msg_level_name isnt undefined
-        @set_level_css(".level_name",msg_level_name)
+        window.modal_dialog.set_add_css(".level_name",msg_level_name)
       else
-        @set_level_remove_css(".level_name")
+        window.modal_dialog.set_remove_css(".level_name")
+    console.log($(".update-level").parents(".post"))
 
   bind_events: ->
     that = this
@@ -182,9 +171,9 @@ class LevelModal
         url: "/levels/"+level_id+"",
         data: $( this ).serializeArray()
       .success ( msg ) =>
-        that.set_success_im(msg)
+        that.set_success_im(msg,level_id)
       .error (msg) =>
-        that.set_failure_im(msg)
+        that.set_failure_im(msg,level_id)
 
 jQuery(document).on 'ready page:load', ->
   if $(".page-posts-index").length > 0

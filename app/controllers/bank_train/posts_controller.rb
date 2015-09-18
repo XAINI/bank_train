@@ -38,7 +38,11 @@ module BankTrain
     def update
       @post = Post.find(params[:id])
       if @post.update_attributes(post_params)
-        render :json => {:status => 200}
+        form_html = render_to_string :partial => "post_index_data", locals: { post: @post }
+        render :json => {
+          :status => 200,
+          :body => form_html
+        }
       else
         render :json => @post.errors.messages, :status => 413
       end

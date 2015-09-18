@@ -17,7 +17,11 @@ module BankTrain
     def create
       @level = Level.create(level_params)
       if @level.save
-        render :json => {:status => 200}
+        form_html = render_to_string :partial => "level_index_data", locals: {level: @level}
+        render :json => {
+          :status => 200,
+          :body => form_html
+        }
       else
         render :json => @level.errors.messages, :status => 413
       end
@@ -35,7 +39,11 @@ module BankTrain
     def update
       @level = Level.find(params[:id])
       if @level.update_attributes(level_params)
-        render :json => {:status => 200}
+        form_html = render_to_string :partial => "level_index_data", locals:{ level: @level }
+        render :json => {
+          :status => 200,
+          :body => form_html
+        }
       else
         render :json => @level.errors.messages, :status => 413
       end
