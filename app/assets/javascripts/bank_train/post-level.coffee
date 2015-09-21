@@ -1,7 +1,6 @@
 class PostModal
 #岗位模态框
   constructor: (@$elm)->
-    @window_modal_dialog = $("#modal-dialog")
     @bind_events()
 
   set_success_im: (msg,post_id)->
@@ -41,6 +40,13 @@ class PostModal
       else
         window.modal_dialog.set_remove_css(".post_name")
 
+      if (msg_number isnt undefined) and (msg_name isnt undefined)
+        jQuery(".modal-body .simple_form input[name='post[number]']").focus()
+      else if(msg_number isnt undefined)
+        jQuery(".modal-body .simple_form input[name='post[number]']").focus()
+      else
+        jQuery(".modal-body .simple_form input[name='post[name]']").focus()
+
   bind_events: ->
     that = this
 
@@ -55,7 +61,7 @@ class PostModal
       .error (msg) ->
         console.log(msg)
 
-    @window_modal_dialog.on "submit",".modal-body .page-posts-form-new .simple_form",(event) ->
+    window.modal_dialog.get_modal_dialog().on "submit",".modal-body .page-posts-form-new .simple_form",(event) ->
       event.preventDefault()
       $.ajax
         method: "POST",
@@ -79,7 +85,7 @@ class PostModal
       .error (msg) ->
         console.log(msg)
 
-    @window_modal_dialog.on "submit",".modal-body .page-posts-form-edit .simple_form", ->
+    window.modal_dialog.get_modal_dialog().on "submit",".modal-body .page-posts-form-edit .simple_form", ->
       post_id = $(this).closest(".page-posts-form-edit").attr("data-post-id")
       event.preventDefault();
       $.ajax
@@ -94,7 +100,6 @@ class PostModal
 class LevelModal
 # 级别模态框
   constructor: (@$elm)->
-    @window_modal_dialog = $("#modal-dialog")
     @bind_events()
 
   set_success_im: (msg,level_id)->
@@ -130,6 +135,13 @@ class LevelModal
       else
         window.modal_dialog.set_remove_css(".level_name")
 
+      if (msg_level_number isnt undefined) and (msg_level_name isnt undefined)
+        jQuery(".modal-body .simple_form input[name='level[number]']").focus()
+      else if(msg_level_number isnt undefined) 
+        jQuery(".modal-body .simple_form input[name='level[number]']").focus()
+      else
+        jQuery(".modal-body .simple_form input[name='level[name]']").focus()
+
   bind_events: ->
     that = this
 
@@ -144,7 +156,7 @@ class LevelModal
       .error (msg) ->
         console.log(msg)
 
-    @window_modal_dialog.on "submit",".modal-body .page-levels-new .simple_form", (event) ->
+    window.modal_dialog.get_modal_dialog().on "submit",".modal-body .page-levels-new .simple_form", (event) ->
       event.preventDefault()
       $.ajax
         method: "POST",
@@ -168,7 +180,7 @@ class LevelModal
       .error (msg) ->
         console.log(msg)
 
-    @window_modal_dialog.on "submit",".modal-body .page-levels-edit .simple_form", (event) ->
+    window.modal_dialog.get_modal_dialog().on "submit",".modal-body .page-levels-edit .simple_form", (event) ->
       level_id = $( this ).closest(".page-levels-edit").attr("data-level-id")
       event.preventDefault()
       $.ajax
