@@ -16,7 +16,7 @@ module BankTrain
     def create
       @post = Post.create(post_params)
       if @post.save
-        form_html = render_to_string :partial => 'post_index_data',locals: { post: @post } 
+        form_html = render_to_string :partial => 'post_index_tr',locals: { post: @post } 
         render :json => {
           :status => 200,
           :body => form_html
@@ -38,7 +38,7 @@ module BankTrain
     def update
       @post = Post.find(params[:id])
       if @post.update_attributes(post_params)
-        form_html = render_to_string :partial => "post_index_data", locals: { post: @post }
+        form_html = render_to_string :partial => "post_index_tr", locals: { post: @post }
         render :json => {
           :status => 200,
           :body => form_html

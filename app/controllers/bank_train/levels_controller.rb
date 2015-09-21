@@ -2,7 +2,6 @@ module BankTrain
   class LevelsController < BankTrain::ApplicationController
     def index
       @levels = BankTrain::Level.all
-      @level = Level.new
     end
 
     def new
@@ -17,7 +16,7 @@ module BankTrain
     def create
       @level = Level.create(level_params)
       if @level.save
-        form_html = render_to_string :partial => "level_index_data", locals: {level: @level}
+        form_html = render_to_string :partial => "level_index_tr", locals: {level: @level}
         render :json => {
           :status => 200,
           :body => form_html
@@ -39,7 +38,7 @@ module BankTrain
     def update
       @level = Level.find(params[:id])
       if @level.update_attributes(level_params)
-        form_html = render_to_string :partial => "level_index_data", locals:{ level: @level }
+        form_html = render_to_string :partial => "level_index_tr", locals:{ level: @level }
         render :json => {
           :status => 200,
           :body => form_html

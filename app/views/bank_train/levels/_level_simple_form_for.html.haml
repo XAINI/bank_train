@@ -1,0 +1,9 @@
+= simple_form_for @level do |f|
+  = f.input :number
+
+  = f.input :name
+
+  = f.association :posts, label_method: :name, as: :check_boxes
+
+  = f.button :submit, "提交"
+

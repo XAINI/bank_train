@@ -1,15 +1,4 @@
 .page-posts-form-edit{:data => {:post_id => @post.id}}
-  = simple_form_for @post do |f|
-    = f.input :number
-
-    = f.input :name
-
-    = f.input :desc
-
-    = f.association :levels, label_method: :name, as: :check_boxes
-    
-    = f.association :business_categories, label_method: :name, as: :check_boxes
-
-    = f.button :submit, "提交"
+  = render :partial => "post_simple_form_for"
 
 

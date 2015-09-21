@@ -1,7 +1,7 @@
 class PostModal
 #岗位模态框
   constructor: (@$elm)->
-    @modal_dialog_hide_event_loaded = false
+    @window_modal_dialog = $("#modal-dialog")
     @bind_events()
 
   set_success_im: (msg,post_id)->
@@ -12,7 +12,6 @@ class PostModal
     # 会导致 set_scroll_bottom 方法内的代码没有产生效果
     # 原因未知
     # by fushang318
-    # if !@modal_dialog_hide_event_loaded
       window.modal_dialog.get_modal_dialog().one 'hidden.bs.modal', =>
         if post_id is undefined
           window.modal_dialog.set_scroll_bottom(".page-posts-index")
@@ -56,7 +55,7 @@ class PostModal
       .error (msg) ->
         console.log(msg)
 
-    @$elm.on "submit",".modal-body .page-posts-form-new .simple_form",(event) ->
+    @window_modal_dialog.on "submit",".modal-body .page-posts-form-new .simple_form",(event) ->
       event.preventDefault()
       $.ajax
         method: "POST",
@@ -80,7 +79,7 @@ class PostModal
       .error (msg) ->
         console.log(msg)
 
-    @$elm.on "submit",".modal-body .page-posts-form-edit .simple_form", ->
+    @window_modal_dialog.on "submit",".modal-body .page-posts-form-edit .simple_form", ->
       post_id = $(this).closest(".page-posts-form-edit").attr("data-post-id")
       event.preventDefault();
       $.ajax
@@ -95,6 +94,7 @@ class PostModal
 class LevelModal
 # 级别模态框
   constructor: (@$elm)->
+    @window_modal_dialog = $("#modal-dialog")
     @bind_events()
 
   set_success_im: (msg,level_id)->
@@ -129,7 +129,6 @@ class LevelModal
         window.modal_dialog.set_add_css(".level_name",msg_level_name)
       else
         window.modal_dialog.set_remove_css(".level_name")
-    console.log($(".update-level").parents(".post"))
 
   bind_events: ->
     that = this
@@ -145,7 +144,7 @@ class LevelModal
       .error (msg) ->
         console.log(msg)
 
-    @$elm.on "submit",".modal-body .page-levels-new .simple_form", (event) ->
+    @window_modal_dialog.on "submit",".modal-body .page-levels-new .simple_form", (event) ->
       event.preventDefault()
       $.ajax
         method: "POST",
@@ -169,7 +168,7 @@ class LevelModal
       .error (msg) ->
         console.log(msg)
 
-    @$elm.on "submit",".modal-body .page-levels-edit .simple_form", (event) ->
+    @window_modal_dialog.on "submit",".modal-body .page-levels-edit .simple_form", (event) ->
       level_id = $( this ).closest(".page-levels-edit").attr("data-level-id")
       event.preventDefault()
       $.ajax

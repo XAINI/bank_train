@@ -13,6 +13,6 @@
         %tr
           %td{colspan: 3} 没有数据
       - @levels.each do |level|
-        = render :partial => "level_index_data", locals: { level: level }
+        = render :partial => "level_index_tr", locals: { level: level }
 
-  = render_cell :"bank_train/modal", :show
+= render_cell :"bank_train/modal", :show

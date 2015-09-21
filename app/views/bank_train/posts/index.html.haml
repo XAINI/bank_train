@@ -15,6 +15,5 @@
         %tr
           %td{colspan: 3} 没有数据
       - @posts.each do |post|
-        = render :partial => "post_index_data",locals: { post: post }
-
-  = render_cell :"bank_train/modal", :show
+        = render :partial => "post_index_tr",locals: { post: post }
+= render_cell :"bank_train/modal", :show
