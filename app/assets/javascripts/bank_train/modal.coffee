@@ -9,6 +9,7 @@ class ModalDialog
   set_body: (body)->
     @$body_ele.html(body)
 
+  #移除样式
   set_remove_css:(class_css)->
     $(class_css).removeClass("has-error")
     $(class_css+" span").remove();
