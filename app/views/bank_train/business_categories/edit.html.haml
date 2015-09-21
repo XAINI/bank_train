@@ -1,0 +1,7 @@
+.page-edit-business-categories
+  = simple_form_for @category do |f|
+    = f.input 'name'
+    = f.association :posts, as: :check_boxes
+    = f.association :business_operations, as: :check_boxes
+    = f.association :parent, as: :radio_buttons
+    = f.submit

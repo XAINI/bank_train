@@ -10,5 +10,8 @@ module BankTrain
 
     def screens_input
     end
+
+    def inputer_compoents
+    end
   end
 end

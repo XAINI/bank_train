@@ -2,18 +2,29 @@ module BankTrain
   class BusinessOperation
     include Mongoid::Document
     include Mongoid::Timestamps
+    include Mongoid::Tree
 
     field :number
     field :name
     field :chapter_number
 
+    default_scope ->{order(:id.asc)}
+
     has_and_belongs_to_many :business_categories, class_name: 'BankTrain::BusinessCategory'
-    belongs_to :parent_operation, class_name: 'BankTrain::BusinessOperation'
-    has_many :children_operations, class_name: 'BankTrain::BusinessOperation'
+
+    def to_hash
+      {
+        :id             => self.id.to_s,
+        :number         => self.number,
+        :name           => self.name,
+        :chapter_number => self.chapter_number,
+        :parent_id      => self.parent_id.to_s
+      }
+    end
 
     module UserMethods
       extend ActiveSupport::Concern
-      
+
       # 获取全部操作
       def train_business_operations
         train_business_categories.map {|category|

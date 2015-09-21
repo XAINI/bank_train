@@ -43,7 +43,7 @@ def import_business_categories
     children = children_names.map do |child_name|
       BankTrain::BusinessCategory.create name: child_name
     end
-    bc.children_categories = children
+    bc.children = children
   end
 
   # 导入业务类型与岗位关系
@@ -67,7 +67,7 @@ def _r_ibo(item) # import_business_operations
     _r_ibo citem
   end
 
-  operation.children_operations = children
+  operation.children = children
   operation
 end
 

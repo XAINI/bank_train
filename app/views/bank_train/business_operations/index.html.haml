@@ -3,7 +3,5 @@
 
   .business-operations-tree
     .tree-name 业务操作目录树
-    %ul.operations
-      - @root_operations.each do |operation|
-        - operation_tree_node operation
-        / TODO: load slow
+    %a.btn.btn-primary{:href=>"/business_operations/new"} 创建业务操作
+    .tree{:data => {:filter => params[:filter]}}

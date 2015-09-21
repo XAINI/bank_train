@@ -1,6 +1,0 @@
-%li.operation
-  .name
-    %span= @operation.name
-  %ul.operations
-    - @operation.children_operations.each do |operation|
-      = render_cell :'bank_train/business_operations', :tree_node, operation

@@ -48,3 +48,5 @@ gem 'bank_train', path: '../'
 gem 'bootstrap-sass', '~> 3.3.5'
 gem 'simple_form'
 gem 'cells', '~> 3.10.1'
+
+# gem 'lily-components', path: '/web/ben7th/lily-components'

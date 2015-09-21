@@ -1,0 +1,9 @@
+.form-business-operation
+  = simple_form_for @operation,:input_html  => {:class => "form-horizontal"}do |f|
+
+    = f.input :number
+    = f.input :name
+    = f.input :chapter_number
+    = f.association :parent,   as: :radio_buttons
+    = f.association :business_categories,   as: :check_boxes
+    = f.button :submit, "添加"
