@@ -47,6 +47,21 @@ class PostModal
       else
         jQuery(".modal-body .simple_form input[name='post[name]']").focus()
 
+  get_children_r: (cate, categories)->
+    children = @_get_children(cate, categories)
+    cate.children = children if cate != null
+    for child in children
+      @_get_children_r(child, categories)
+    children
+
+  get_children: (parent, categories)->
+    children = []
+    parent_id = if parent == null then "" else parent.id
+    for cate in categories
+      if cate.parent_id == parent_id
+        children.push cate
+    children
+
   bind_events: ->
     that = this
 
@@ -71,6 +86,22 @@ class PostModal
         that.set_success_im(msg)
       .error (msg) =>
         that.set_failure_im(msg)
+
+    window.modal_dialog.get_modal_dialog().on "click", ".modal-content .modal-body .post_business_categories .bsns_btn", ->
+      window.modal_dialog.hide()
+      jQuery.ajax
+        url: "/posts/bsns"
+        method: "get"
+        dataType: "json"
+      .success (msg) =>
+        console.log("Hello")
+        console.log(msg)
+        @get_children_r( null, msg )
+        # window.modal_dialog.set_title( msg.title )
+        # window.modal_dialog.set_body( msg.body )
+      # .error (msg) =>
+      #   console.log(msg)
+
 
     # 岗位信息修改
     @$elm.on "click",".post-list .post .update-post", ->

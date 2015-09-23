@@ -9,7 +9,7 @@
         name:    岗位名
         desc:    岗位描述
         levels:  岗位级别
-        business_categories: 业务类别
+        business_categories: 业务种类
       bank_train/level:
         number:  级别编号
         name:    级别名称

@@ -1,7 +1,12 @@
 BankTrain::Engine.routes.draw do
   root 'home#index'
 
-  resources :posts
+  resources :posts do
+    collection do
+      get "bsns"
+    end
+  end
+
   resources :levels
   resources :business_categories
   resources :business_operations

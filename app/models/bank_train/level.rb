@@ -6,6 +6,8 @@ module BankTrain
     field :number
     field :name
 
+    validates :number, :name, presence: true
+
     default_scope ->{order(:id.asc)}
 
     has_many :users
