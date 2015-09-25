@@ -48,11 +48,11 @@ class PostModal
         jQuery(".modal-body .simple_form input[name='post[name]']").focus()
 
   get_children_r: (cate, categories)->
-    children = @_get_children(cate, categories)
-    cate.children = children if cate != null
-    for child in children
-      @_get_children_r(child, categories)
-    children
+    nodes = @get_children(cate, categories)
+    cate.nodes = nodes if cate != null
+    for text in nodes
+      @get_children_r(text, categories)
+    nodes
 
   get_children: (parent, categories)->
     children = []
@@ -87,21 +87,28 @@ class PostModal
       .error (msg) =>
         that.set_failure_im(msg)
 
-    window.modal_dialog.get_modal_dialog().on "click", ".modal-content .modal-body .post_business_categories .bsns_btn", ->
-      window.modal_dialog.hide()
+    window.modal_dialog.get_modal_dialog().on "click", ".modal-content .modal-body .post_business_categories .bsns_btn", =>
       jQuery.ajax
-        url: "/posts/bsns"
+        url: "/business_categories.json"
         method: "get"
         dataType: "json"
-      .success (msg) =>
-        console.log("Hello")
+      .success (msg) ->
+        # 1 把服务器返回的 json(array 格式) 转换成 json( tree 结构)
+        # 2 替换模态框的 body 内容为 <div class="tree"/>
+        # 3 通过调用 jQuery('.modal-content .modal-body .tree').treeview(详细参数)
+        #   把 <div class="tree"/> 替换成要显示的树状内容
+        tree_to_bsns_ctgr = that.get_children_r( null, msg )
+        jQuery(".modal-content .modal-body .simple_form").addClass("hide")
+        jQuery(".modal-content .modal-body .tree").removeClass("hide")
+        jQuery(".modal-content .modal-body .tree-button").removeClass("hide")
+        jQuery(".modal-content .modal-body .tree").appendTo(window.modal_dialog.set_bsns_ctgr_tree(tree_to_bsns_ctgr))
+      .error (msg) =>
         console.log(msg)
-        @get_children_r( null, msg )
-        # window.modal_dialog.set_title( msg.title )
-        # window.modal_dialog.set_body( msg.body )
-      # .error (msg) =>
-      #   console.log(msg)
 
+    window.modal_dialog.get_modal_dialog().on "click", ".modal-content .modal-body .tree-button", =>
+      jQuery(".modal-content .modal-body .tree").addClass("hide")
+      jQuery(".modal-content .modal-body .simple_form").removeClass("hide")
+      jQuery(".modal-content .modal-body .tree-button").addClass("hide")
 
     # 岗位信息修改
     @$elm.on "click",".post-list .post .update-post", ->
@@ -168,7 +175,7 @@ class LevelModal
 
       if (msg_level_number isnt undefined) and (msg_level_name isnt undefined)
         jQuery(".modal-body .simple_form input[name='level[number]']").focus()
-      else if(msg_level_number isnt undefined) 
+      else if(msg_level_number isnt undefined)
         jQuery(".modal-body .simple_form input[name='level[number]']").focus()
       else
         jQuery(".modal-body .simple_form input[name='level[name]']").focus()

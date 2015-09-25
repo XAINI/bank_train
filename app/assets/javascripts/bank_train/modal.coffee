@@ -29,6 +29,33 @@ class ModalDialog
   set_scroll_bottom: (class_by_page)->
     $(document).scrollTop($(class_by_page).height())
 
+
+  #业务种类
+  set_bsns_ctgr_tree: (tree_to_bsns_ctgr)->
+    tree = jQuery('.modal-content .modal-body .tree').treeview
+      data: tree_to_bsns_ctgr
+      showIcon: false,
+      selectable: false,
+      highlightSelected: false,
+      showCheckbox: true,
+      onNodeChecked: (event, node)->
+        console.log node
+        if node.nodes
+          ids = jQuery.map node.nodes, (n)->
+            n.nodeId
+          tree.treeview('checkNode', [ ids, { silent: false } ])
+      ,
+      onNodeUnchecked: (event, node)->
+        parent = tree.treeview('getParent', node)
+        if parent.context != document && parent.state.checked
+          tree.treeview 'checkNode', node.nodeId
+
+        if node.nodes
+          ids = jQuery.map node.nodes, (n)->
+            n.nodeId
+          tree.treeview('uncheckNode', [ ids, { silent: false } ])
+
 jQuery(document).on 'ready page:load', ->
   if $("#modal-dialog").length > 0
     window.modal_dialog = new ModalDialog($("#modal-dialog"))
+

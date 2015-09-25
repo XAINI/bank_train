@@ -17,6 +17,7 @@ module BankTrain
           :id              => category.id.to_s,
           :parent_id       => category.parent_id.to_s,
           :name            => category.name,
+          :text            => category.name,
           :children_info   => category.children.count == 0 ? "" : "[#{category.children.count} 项子业务种类]",
           :posts_info      => category.posts.count == 0 ? "" : "[#{category.posts.count} 个对应岗位]",
           :operations      => oper_hash
