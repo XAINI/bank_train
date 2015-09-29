@@ -6,8 +6,12 @@
   = f.input :desc
 
   = f.association :levels, label_method: :name, as: :check_boxes
+  
+  .bsns-ctgr
+    = f.association :business_categories, label_method: :name, as: :hidden
 
   = f.input :business_categories, input_html:{class: "bsns_btn btn btn-primary", type:"button", value:"业务种类"}
+  / = f.button :button, type: "button", class: "btn btn-primary","业务种类"
 
   = f.button :submit, "提交"
 
