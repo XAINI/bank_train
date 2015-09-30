@@ -15,6 +15,8 @@ module BankTrain
 
     def create
       @post = Post.create(post_params)
+      p ">>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<>>>>>>>>>>>><<<<<<<<<<"
+      p @post
       if @post.save
         form_html = render_to_string :partial => 'post_index_tr',locals: { post: @post } 
         render :json => {
