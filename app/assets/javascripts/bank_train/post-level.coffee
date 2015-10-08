@@ -73,7 +73,6 @@ class PostModal
       highlightSelected: false,
       showCheckbox: true,
       onNodeChecked: (event, node)->
-        console.log node
         if node.nodes
           ids = jQuery.map node.nodes, (n)->
             n.nodeId
@@ -105,33 +104,30 @@ class PostModal
 
     window.modal_dialog.get_modal_dialog().on "submit",".modal-body .page-posts-form-new .simple_form",(event) ->
       event.preventDefault()
+      post_form_data = $( this ).serializeArray()
       tree = that.tree_to_bsns_ctgr
       if tree isnt undefined
         tree_ids = $.map($('.modal-content .modal-body .tree').treeview('getChecked', 0),(tree) -> return tree.id)
-      # $(".modal-content .modal-body .simple_form .bsns-ctgr .post_business_categories .form-control input[value='#{tree_ids}']")
         for bsns_id in tree_ids
-          $(".modal-content .modal-body .simple_form .bsns-ctgr .post_business_categories .form-control").push(bsns_id)
+          bsns_tree_ids = { 'name' : 'post[business_category_ids][]', 'value' : bsns_id } 
+          post_form_data.push( bsns_tree_ids )
 
-      # post_ctgr = ($( this ).serializeArray()).concat(tree_ids)
-      # console.log( post_ctgr )
-      console.log( $( this ).serializeArray() )
-
-      # test  
-      number = "1230"
-      name = "柜员培训"
       $.ajax
         method: "POST",
         url: "/posts",
-        data: {         
-          'post[number]' :number ,
-          'post[name]' :name 
-        }
+        data: post_form_data
       .success ( msg ) =>
         that.set_success_im(msg)
       .error (msg) =>
         that.set_failure_im(msg)
 
     window.modal_dialog.get_modal_dialog().on "click", ".modal-content .modal-body .post_business_categories .bsns_btn", =>
+      ctgr_selected_data = jQuery(".modal-content .modal-body .tree").attr("data-ctgr-selected")
+      if ctgr_selected_data isnt undefined
+        for category in ctgr_selected_data
+          console.log category.post_ids
+
+      console.log(ctgr_selected_data)
       jQuery.ajax
         url: "/business_categories.json"
         method: "get"
