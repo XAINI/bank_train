@@ -109,7 +109,7 @@ class PostModal
       if tree isnt undefined
         tree_ids = $.map($('.modal-content .modal-body .tree').treeview('getChecked', 0),(tree) -> return tree.id)
         for bsns_id in tree_ids
-          bsns_tree_ids = { 'name' : 'post[business_category_ids][]', 'value' : bsns_id } 
+          bsns_tree_ids = { 'name' : 'post[business_category_ids][]', 'value' : bsns_id }
           post_form_data.push( bsns_tree_ids )
 
       $.ajax
@@ -122,12 +122,21 @@ class PostModal
         that.set_failure_im(msg)
 
     window.modal_dialog.get_modal_dialog().on "click", ".modal-content .modal-body .post_business_categories .bsns_btn", =>
-      ctgr_selected_data = jQuery(".modal-content .modal-body .tree").attr("data-ctgr-selected")
-      if ctgr_selected_data isnt undefined
-        for category in ctgr_selected_data
-          console.log category.post_ids
+      judge_load = that.judge_inited
+      if judge_load is undefined
+        ctgr_selected_data = jQuery(".modal-content .modal-body .tree").attr("data-ctgr-selected")
+        result = new Array()
+        if ctgr_selected_data isnt undefined
+          json_obj = JSON.parse(ctgr_selected_data)
+          for category in json_obj
+            selected_id = category._id.$oid
+            result.push(selected_id)
+        # if result.length isnt 0
+        #   json_result_string = JSON.stringify(result)
+        #   json_result = JSON.parse(json_result_string)
 
-      console.log(ctgr_selected_data)
+        #   console.log( json_result )
+        #   console.log result
       jQuery.ajax
         url: "/business_categories.json"
         method: "get"
@@ -137,7 +146,10 @@ class PostModal
         # 2 替换模态框的 body 内容为 <div class="tree"/>
         # 3 通过调用 jQuery('.modal-content .modal-body .tree').treeview(详细参数)
         #   把 <div class="tree"/> 替换成要显示的树状内容
-        #jQuery.map(tree.treeview('getChecked', 0),(n) -> return n.category_id) 
+        #jQuery.map(tree.treeview('getChecked', 0),(n) -> return n.category_id)
+        # tree.treeview('getNode', 0);
+        # {text: xxx, nodes: [], id: xxx, name: xxx, nodeId: xxx}
+        # tree.treeview('checkNode', [ ids, { silent: false } ])
         that.tree_to_bsns_ctgr = that.get_children_r( null, msg )
         jQuery(".modal-content .modal-body .simple_form").addClass("hide")
         jQuery(".modal-content .modal-body .tree").removeClass("hide")
@@ -150,6 +162,7 @@ class PostModal
       jQuery(".modal-content .modal-body .tree").addClass("hide")
       jQuery(".modal-content .modal-body .simple_form").removeClass("hide")
       jQuery(".modal-content .modal-body .tree-button").addClass("hide")
+      that.judge_inited = true
 
     # 岗位信息修改
     @$elm.on "click",".post-list .post .update-post", ->
@@ -166,11 +179,19 @@ class PostModal
 
     window.modal_dialog.get_modal_dialog().on "submit",".modal-body .page-posts-form-edit .simple_form", ->
       post_id = $(this).closest(".page-posts-form-edit").attr("data-post-id")
-      event.preventDefault();
+      event.preventDefault()
+      post_form_data = $( this ).serializeArray()
+      tree = that.tree_to_bsns_ctgr
+      if tree isnt undefined
+        tree_ids = $.map($('.modal-content .modal-body .tree').treeview('getChecked', 0),(tree) -> return tree.id)
+        for bsns_id in tree_ids
+          bsns_tree_ids = { 'name' : 'post[business_category_ids][]', 'value' : bsns_id }
+          post_form_data.push( bsns_tree_ids )
+
       $.ajax
         method: "PATCH",
         url: "/posts/"+post_id+"",
-        data: $( this ).serializeArray()
+        data: post_form_data
       .success ( msg ) =>
         that.set_success_im(msg,post_id)
       .error (msg) =>
