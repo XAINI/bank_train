@@ -11,5 +11,5 @@
 
   = f.button :submit, "提交"
 
-.tree.hide{:data => {:ctgr_selected => @post.business_categories.to_json}}
+.tree.hide{:data => {:ctgr_selected => @post.business_categories.map do |cate|{:id => cate.id.to_s}end.to_json}}
 %button{:type =>'button', class: 'btn btn-primary tree-button hide'}确定

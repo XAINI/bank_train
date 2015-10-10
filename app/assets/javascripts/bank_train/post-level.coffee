@@ -33,7 +33,7 @@ class PostModal
       if msg_number isnt undefined
         window.modal_dialog.set_add_css(".post_number",msg_number)
       else
-         window.modal_dialog.set_remove_css(".post_number")
+        window.modal_dialog.set_remove_css(".post_number")
 
       if msg_name isnt undefined
         window.modal_dialog.set_add_css(".post_name",msg_name)
@@ -123,40 +123,55 @@ class PostModal
 
     window.modal_dialog.get_modal_dialog().on "click", ".modal-content .modal-body .post_business_categories .bsns_btn", =>
       judge_load = that.judge_inited
-      if judge_load is undefined
-        ctgr_selected_data = jQuery(".modal-content .modal-body .tree").attr("data-ctgr-selected")
-        result = new Array()
-        if ctgr_selected_data isnt undefined
-          json_obj = JSON.parse(ctgr_selected_data)
-          for category in json_obj
-            selected_id = category._id.$oid
-            result.push(selected_id)
-        # if result.length isnt 0
-        #   json_result_string = JSON.stringify(result)
-        #   json_result = JSON.parse(json_result_string)
+      if judge_load is undefined or false
+        ctgr_selected_data = jQuery(".modal-content .modal-body .tree").data("ctgr-selected")
+        # console.log ctgr_selected_data
+        jQuery.ajax
+          url: "/business_categories.json"
+          method: "get"
+          dataType: "json"
+        .success (msg) ->
+          # 1 把服务器返回的 json(array 格式) 转换成 json( tree 结构)
+          # 2 替换模态框的 body 内容为 <div class="tree"/>
+          # 3 通过调用 jQuery('.modal-content .modal-body .tree').treeview(详细参数)
+          #   把 <div class="tree"/> 替换成要显示的树状内容
+          #jQuery.map(tree.treeview('getChecked', 0),(n) -> return n.category_id)
+          # tree.treeview('getNode', 0);
+          # {text: xxx, nodes: [], id: xxx, name: xxx, nodeId: xxx}
+          # tree.treeview('checkNode', [ ids, { silent: false } ])
+          that.tree_to_bsns_ctgr = that.get_children_r( null, msg )
+          cate_tree_ids = new Array()
+          cate_tree_data = new Array()
+          cate_compare_id_ary = new Array()
+          for cate_parent_ids in that.tree_to_bsns_ctgr
+            cate_parents_id = cate_parent_ids.id
+            cate_tree_ids.push(cate_parents_id)
+            cate_tree_data.push(cate_parent_ids)
+            for cate_children_ids in cate_parent_ids.nodes
+              cate_children_id = cate_children_ids.id
+              cate_tree_ids.push(cate_children_id)
+              cate_tree_data.push(cate_children_ids)
+          for cate_compare in cate_tree_ids
+            for cate_select in ctgr_selected_data
+              cate_select_id = cate_select.id
+              if cate_compare is cate_select_id
+                cate_compare_id_ary.push(cate_compare)
+                for cate_select_data in cate_tree_data
+                  console.log cate_select_data
 
-        #   console.log( json_result )
-        #   console.log result
-      jQuery.ajax
-        url: "/business_categories.json"
-        method: "get"
-        dataType: "json"
-      .success (msg) ->
-        # 1 把服务器返回的 json(array 格式) 转换成 json( tree 结构)
-        # 2 替换模态框的 body 内容为 <div class="tree"/>
-        # 3 通过调用 jQuery('.modal-content .modal-body .tree').treeview(详细参数)
-        #   把 <div class="tree"/> 替换成要显示的树状内容
-        #jQuery.map(tree.treeview('getChecked', 0),(n) -> return n.category_id)
-        # tree.treeview('getNode', 0);
-        # {text: xxx, nodes: [], id: xxx, name: xxx, nodeId: xxx}
-        # tree.treeview('checkNode', [ ids, { silent: false } ])
-        that.tree_to_bsns_ctgr = that.get_children_r( null, msg )
+          console.log cate_compare_id_ary
+          console.log cate_tree_data
+            # console.log cate_compare
+          jQuery(".modal-content .modal-body .simple_form").addClass("hide")
+          jQuery(".modal-content .modal-body .tree").removeClass("hide")
+          jQuery(".modal-content .modal-body .tree-button").removeClass("hide")
+          jQuery(".modal-content .modal-body .tree").appendTo(that.set_bsns_ctgr_tree(that.tree_to_bsns_ctgr))
+        .error (msg) =>
+          console.log(msg)
+      else
         jQuery(".modal-content .modal-body .simple_form").addClass("hide")
         jQuery(".modal-content .modal-body .tree").removeClass("hide")
         jQuery(".modal-content .modal-body .tree-button").removeClass("hide")
-        jQuery(".modal-content .modal-body .tree").appendTo(that.set_bsns_ctgr_tree(that.tree_to_bsns_ctgr))
-      .error (msg) =>
-        console.log(msg)
 
     window.modal_dialog.get_modal_dialog().on "click", ".modal-content .modal-body .tree-button", =>
       jQuery(".modal-content .modal-body .tree").addClass("hide")
