@@ -69,7 +69,7 @@ class PostModal
     tree = jQuery('.modal-content .modal-body .tree').treeview
       data: tree_to_bsns_ctgr
       showIcon: false,
-      selectable: false,
+      selectable: true,
       highlightSelected: false,
       showCheckbox: true,
       onNodeChecked: (event, node)->
@@ -86,7 +86,7 @@ class PostModal
         if node.nodes
           ids = jQuery.map node.nodes, (n)->
             n.nodeId
-          tree.treeview('uncheckNode', [ ids, { silent: false } ])
+        tree.treeview('uncheckNode', [ ids, { silent: false } ])
 
   bind_events: ->
     that = this
@@ -125,7 +125,6 @@ class PostModal
       judge_load = that.judge_inited
       if judge_load is undefined or false
         ctgr_selected_data = jQuery(".modal-content .modal-body .tree").data("ctgr-selected")
-        # console.log ctgr_selected_data
         jQuery.ajax
           url: "/business_categories.json"
           method: "get"
@@ -139,33 +138,39 @@ class PostModal
           # tree.treeview('getNode', 0);
           # {text: xxx, nodes: [], id: xxx, name: xxx, nodeId: xxx}
           # tree.treeview('checkNode', [ ids, { silent: false } ])
-          that.tree_to_bsns_ctgr = that.get_children_r( null, msg )
-          cate_tree_ids = new Array()
-          cate_tree_data = new Array()
-          cate_compare_id_ary = new Array()
-          for cate_parent_ids in that.tree_to_bsns_ctgr
-            cate_parents_id = cate_parent_ids.id
-            cate_tree_ids.push(cate_parents_id)
-            cate_tree_data.push(cate_parent_ids)
-            for cate_children_ids in cate_parent_ids.nodes
-              cate_children_id = cate_children_ids.id
-              cate_tree_ids.push(cate_children_id)
-              cate_tree_data.push(cate_children_ids)
-          for cate_compare in cate_tree_ids
-            for cate_select in ctgr_selected_data
-              cate_select_id = cate_select.id
-              if cate_compare is cate_select_id
-                cate_compare_id_ary.push(cate_compare)
-                for cate_select_data in cate_tree_data
-                  console.log cate_select_data
 
-          console.log cate_compare_id_ary
-          console.log cate_tree_data
-            # console.log cate_compare
+          # 实现步骤
+          # 1 拿到当前 post 关联的 database category ids
+          # 2 保证treeview 已经初始化完成
+          # 3 从 treeview 组件拿到 所有 treeview node (tree.treeview('getNode', 0);)
+          # treeview node 的结构是 {text: xxx, nodes: [], id: xxx, name: xxx, nodeId: xxx}
+          # 4 比对 database category ids 和 treeview node 数组，找到对应的 nodeId 数组
+          # 5 通过 tree.treeview('checkNode', [ [nodeId,nodeId], { silent: false } ]) 选中需要选中的节点
+
+          that.tree_to_bsns_ctgr = that.get_children_r( null, msg )
+          tree = that.set_bsns_ctgr_tree(that.tree_to_bsns_ctgr)
+          # input
+          # 所有的分类的数量 cate_count
+          # 需要选中的分类的 数据库条目 id 数组 select_cate_ids
+          # treeview node 数组 {id: xxx nodeId: xxx} treeview_nodes
+
+          cate_count = msg.length
+          select_cate_ids = jQuery.map ctgr_selected_data, (item)->
+            item.id
+
+          treeview_nodes = jQuery.map [0..cate_count-1], (index)->
+            tree.treeview 'getNode', index
+
+          select_nodeIds = []
+          for node in treeview_nodes
+            if -1 != jQuery.inArray node.id, select_cate_ids
+              select_nodeIds.push node.nodeId
+
           jQuery(".modal-content .modal-body .simple_form").addClass("hide")
           jQuery(".modal-content .modal-body .tree").removeClass("hide")
           jQuery(".modal-content .modal-body .tree-button").removeClass("hide")
           jQuery(".modal-content .modal-body .tree").appendTo(that.set_bsns_ctgr_tree(that.tree_to_bsns_ctgr))
+          tree.treeview('checkNode', [ select_nodeIds, { silent: false } ])
         .error (msg) =>
           console.log(msg)
       else
