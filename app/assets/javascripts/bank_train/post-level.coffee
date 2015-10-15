@@ -95,7 +95,6 @@ class PostModal
 
   bind_events: ->
     that = this
-
     # 创建岗位
     # 点击创建按钮设置模态框（弹出模态框）
     @$elm.on "click",".post-crt", ->
@@ -108,7 +107,6 @@ class PostModal
         window.modal_dialog.set_body( msg.body )
       .error (msg) ->
         console.log(msg)
-
     # 点击提交表单(创建)
     window.modal_dialog.get_modal_dialog().on "submit",".modal-body .page-posts-form-new .simple_form",(event) ->
       event.preventDefault()
@@ -129,15 +127,12 @@ class PostModal
         that.set_success_im(msg)
       .error (msg) =>
         that.set_failure_im(msg)
-
     # 点击头 关闭模态框按钮 通过data 设置@global = false 
     window.modal_dialog.get_modal_dialog().on "click", ".modal-content .modal-header .close", =>
       @global = jQuery(".modal-content .modal-header .close").data("global")
-
     # 点击脚 关闭模态框按钮 通过data 设置@global = false 
     window.modal_dialog.get_modal_dialog().on "click", ".modal-content .modal-footer .close-modal", =>
       @global = jQuery(".modal-content .modal-footer .close-modal").data("global")
-
     # 点击 业务种类按钮 设置业务种类树（显示树 隐藏表单）
     window.modal_dialog.get_modal_dialog().on "click", ".modal-content .modal-body .post_business_categories .bsns_btn", =>
       if @global is false
@@ -176,7 +171,6 @@ class PostModal
         jQuery(".modal-content .modal-body .simple_form").addClass("hide")
         jQuery(".modal-content .modal-body .tree").removeClass("hide")
         jQuery(".modal-content .modal-body .tree-button").removeClass("hide")
-
     # 点击树中的确定按钮，隐藏树 显示表单
     window.modal_dialog.get_modal_dialog().on "click", ".modal-content .modal-body .tree-button", =>
       jQuery(".modal-content .modal-body .tree").addClass("hide")
@@ -197,7 +191,6 @@ class PostModal
         window.modal_dialog.set_body( msg.body )
       .error (msg) ->
         console.log(msg)
-
     # 点击提交表单(修改)
     window.modal_dialog.get_modal_dialog().on "submit",".modal-body .page-posts-form-edit .simple_form", ->
       post_id = $(this).closest(".page-posts-form-edit").attr("data-post-id")
@@ -283,7 +276,6 @@ class LevelModal
         window.modal_dialog.set_body( msg.body )
       .error (msg) ->
         console.log(msg)
-
     # 提交表单(创建)
     window.modal_dialog.get_modal_dialog().on "submit",".modal-body .page-levels-new .simple_form", (event) ->
       event.preventDefault()
@@ -309,7 +301,6 @@ class LevelModal
         window.modal_dialog.set_body( msg.body )
       .error (msg) ->
         console.log(msg)
-
     # 提交表单(修改)
     window.modal_dialog.get_modal_dialog().on "submit",".modal-body .page-levels-edit .simple_form", (event) ->
       level_id = $( this ).closest(".page-levels-edit").attr("data-level-id")
